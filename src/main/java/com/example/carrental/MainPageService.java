@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.*;
 public class MainPageService {
     @GetMapping("/")
     public String hello() {
-        return "<h1 style='text-align: center;'>Main Page<h1>";
+        return "<div style='text-align: center;'><h1>Main Page</h1> <a href='/view/cars'>See all available cars</a></div>";
     }
 }

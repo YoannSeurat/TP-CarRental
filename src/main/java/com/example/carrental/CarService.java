@@ -9,28 +9,42 @@ import java.util.Objects;
 
 @RestController
 public class CarService {
-    private List<Car> cars = this.getListOfCars();
+    private List<Car> cars = this.generateListOfCars();
 
     @GetMapping("/cars")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<Car> listOfCars() {
+        return this.cars;
+    }
+
+    @GetMapping("/view/cars")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String prettyPrint_listOfCars() {
         StringBuilder out = new StringBuilder("<a href='/' style='text-decoration: none;'>◀️ Back</a> <br> <h2>Available cars to rent :</h2>");
         for (Car car : this.cars) {
-            out.append("<ul><a href='/cars/"+car.getPlateNumber()+"'>").append(car.getPlateNumber()).append("</a></ul>");
+            out.append("<ul><a href='/view/cars/").append(car.getPlateNumber()).append("'>").append(car.getPlateNumber()).append("</a></ul>");
         }
         return out.toString();
     }
 
-    public List<Car> getListOfCars() {
-        List<Car> cars = new ArrayList<>();
+    public List<Car> generateListOfCars() {
+        List<Car> listofcars = new ArrayList<>();
         for (int i = 0; i < 10; i ++) {
-            cars.add(new Car());
+            listofcars.add(new Car());
         }
-        return cars;
+        return listofcars;
     }
 
     @GetMapping("/cars/{plateNumber}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Car aCar(@PathVariable("plateNumber") String plateNumber) throws Exception {
+        return getCarFromPlateNumber(plateNumber);
+    }
+
+    @GetMapping("/view/cars/{plateNumber}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String prettyPrint_carInfo(@PathVariable("plateNumber") String plateNumber) {
@@ -38,9 +52,13 @@ public class CarService {
         try {
             car = getCarFromPlateNumber(plateNumber);
         } catch (Exception e) {
-            return "<a href='/cars' style='text-decoration: none;'>◀️ Back</a> <br> <h3>" + e.getMessage() + "</h3>";
+            return "<a href='/view/cars' style='text-decoration: none;'>◀️ Back</a> <br> <h3>" + e.getMessage() + "</h3>";
         }
-        return "<a href='/cars' style='text-decoration: none;'>◀️ Back</a> <br> <h3>Car details</h3> Brand : " + car.getBrand() + "<br> Plate number : " + car.getPlateNumber() + "<br> Price / day : $" + car.getPricePerDay();
+        String rentInfo = "<br> Rented : " + car.isRented();
+        if (car.isRented() && car.getRentedDates() != null) {
+            rentInfo += "<br> From : " + car.getRentedDates().getBegin() + " To : " + car.getRentedDates().getEnd();
+        }
+        return "<a href='/view/cars' style='text-decoration: none;'>◀️ Back</a> <br> <h3>Car details</h3> Brand : " + car.getBrand() + "<br> Plate number : " + car.getPlateNumber() + "<br> Price / day : $" + car.getPricePerDay() + rentInfo;
     }
 
     public Car getCarFromPlateNumber(String plateNumber) throws Exception{
@@ -53,10 +71,15 @@ public class CarService {
     }
 
     @PutMapping(value = "/cars/{plateNumber}")
+    @ResponseStatus(HttpStatus.OK)
     public void rent(
             @PathVariable("plateNumber") String plateNumber,
             @RequestParam(value="rent", required = true) boolean rent,
-            @RequestBody Dates dates) {
-
+            @RequestBody(required = false) Dates dates) throws Exception {
+        Car car = getCarFromPlateNumber(plateNumber);
+        car.setRented(rent);
+        if (rent) {
+            car.setRentedDates(dates);
+        }
     }
 }

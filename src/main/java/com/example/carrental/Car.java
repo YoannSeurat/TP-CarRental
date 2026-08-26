@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Random;
 
 public class Car {
-    final private String plateNumber;
-    final private int pricePerDay;
-    final private String brand;
+    private final String plateNumber;
+    private final int pricePerDay;
+    private final String brand;
+    private boolean isRented;
+    private Dates rentedDates;
 
     final List<String> brands = Arrays.asList("Volvo", "Peugeot", "BMW", "Mercedes", "Toyota", "Volkswagen");
     final Random random = new Random();
@@ -16,6 +18,7 @@ public class Car {
         this.plateNumber = this.generateRandomPlateNumber();
         this.pricePerDay = this.generateRandomPricePerDay();
         this.brand = this.getRandomBrand();
+        this.isRented = false;
     }
 
     public String getPlateNumber() {
@@ -26,6 +29,25 @@ public class Car {
     }
     public String getBrand() {
         return brand;
+    }
+
+    public boolean isRented() {
+        return isRented;
+    }
+
+    public void setRented(boolean rented) {
+        this.isRented = rented;
+        if (!rented) {
+            this.rentedDates = null;
+        }
+    }
+
+    public Dates getRentedDates() {
+        return rentedDates;
+    }
+
+    public void setRentedDates(Dates rentedDates) {
+        this.rentedDates = rentedDates;
     }
 
     private String generateRandomPlateNumber() {
