@@ -1,4 +1,4 @@
-# TP1 - Car Rental System
+# TP - Car Rental System
 
 ## Overview
 
