@@ -1,17 +1,23 @@
 package com.example.carrental;
 
+import jakarta.persistence.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+@Entity
 public class Car {
-    private final String plateNumber;
-    private final int pricePerDay;
-    private final String brand;
+    @Id
+    private String plateNumber;
+    private int pricePerDay;
+    private String brand;
     private boolean isRented;
+    @Embedded
     private Dates rentedDates;
 
+    @Transient
     final List<String> brands = Arrays.asList("Volvo", "Peugeot", "BMW", "Mercedes", "Toyota", "Volkswagen");
+    @Transient
     final Random random = new Random();
 
     public Car() {
