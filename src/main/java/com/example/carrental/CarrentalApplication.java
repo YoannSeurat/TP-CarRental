@@ -14,9 +14,7 @@ public class CarrentalApplication {
 
 	@Bean
 	public CommandLineRunner demo(CarRentalService carRentalService) {
-		return (args) -> {
-			carRentalService.addRandomCars(5);
-		};
-	};
+		return args -> carRentalService.addRandomCars(5);
+	}
 
 }
