@@ -1,6 +1,7 @@
 package com.example.carrental;
 
 import com.example.carrental.service.CarRentalService;
+import com.example.carrental.service.PersonRentalService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,8 +15,11 @@ public class CarrentalApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(CarRentalService carRentalService) {
-		return args -> carRentalService.addRandomCars(5);
+	public CommandLineRunner demo(CarRentalService carRentalService, PersonRentalService personRentalService) {
+		return args -> {
+			carRentalService.addRandomCars(5);
+			personRentalService.addRandomPersons(5);
+		};
 	}
 
 }

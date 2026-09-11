@@ -24,7 +24,7 @@ public class Person {
     public Person() {
         this.name = sampleNames.get(random.nextInt(sampleNames.size()));
         this.email = this.name.toLowerCase() + "@efrei.net";
-        this.age = 18 + random.nextInt(50);
+        this.age = 10 + random.nextInt(40);
     }
 
     public Person(String name, String email, int age) {

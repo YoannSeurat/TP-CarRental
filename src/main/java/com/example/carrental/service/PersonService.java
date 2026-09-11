@@ -39,6 +39,13 @@ public class PersonService {
         return out.toString();
     }
 
+    @GetMapping("/persons/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Person personInfo(@PathVariable("name") String name) throws Exception {
+        return personRentalService.getPersonById(name);
+    }
+
     @GetMapping("/view/persons/{name}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -59,23 +66,28 @@ public class PersonService {
         } else {
             out.append("<ul>");
             for (Contract c : person.getContracts()) {
-                out.append("<li>Car: <a href='/view/cars/").append(c.getCar().getPlateNumber()).append("'>").append(c.getCar().getPlateNumber()).append("</a> — From: ");
+                out.append("<li><a href='/view/cars/").append(c.getCar().getPlateNumber()).append("'>").append(c.getCar().getPlateNumber()).append("</a>");
                 if (c.getDates() != null) {
-                    out.append(c.getDates().getBegin()).append(" to ").append(c.getDates().getEnd());
+                    out.append(" - From: ").append(c.getDates().getBegin()).append(" to ").append(c.getDates().getEnd());
                 }
-                out.append(" — Active: ").append(c.isActive()).append("</li>");
+                out.append(" - Active: ").append(c.isActive()).append("</li>");
             }
             out.append("</ul>");
         }
         return out.toString();
     }
 
-    @PutMapping(value = "/persons/{personName}/rent")
+    @PutMapping(value = "/persons/{name}/rent")
     @ResponseStatus(HttpStatus.OK)
-    public void rent(
-            @PathVariable("personName") String personName,
+    public String rent(
+            @PathVariable("name") String name,
             @RequestParam(value = "plate", required = true) String plate,
             @RequestBody(required = false) Dates dates) throws Exception {
-        personRentalService.rentCar(personName, plate, dates);
+        try {
+            personRentalService.rentCar(name, plate, dates);
+            return "Successfully rented " + plate + " for " + name;
+        } catch (Exception e) {
+            return "Error, could not rent " + plate + " for " + name + " : " + e.getMessage();
+        }
     }
 }
