@@ -1,5 +1,6 @@
 package com.example.carrental;
 
+import com.example.carrental.service.CarRentalService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

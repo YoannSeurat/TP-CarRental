@@ -1,5 +1,6 @@
-package com.example.carrental;
+package com.example.carrental.repository;
 
+import com.example.carrental.entity.Car;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 

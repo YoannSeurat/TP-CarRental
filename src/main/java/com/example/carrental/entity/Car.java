@@ -1,4 +1,4 @@
-package com.example.carrental;
+package com.example.carrental.entity;
 
 import jakarta.persistence.*;
 import java.util.Arrays;

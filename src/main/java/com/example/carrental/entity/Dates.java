@@ -1,4 +1,4 @@
-package com.example.carrental;
+package com.example.carrental.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
